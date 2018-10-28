@@ -6,7 +6,7 @@ var db = require('../database/mysql-db');
 var md5 = require('crypto-js/md5');
 
 const SECRET = 'ABCDEF';
-const AC_LIFETIME = 6; // seconds
+const AC_LIFETIME = 10; // seconds
 
 exports.generateAccessToken = userEntity => {
     var payload = {
@@ -23,7 +23,6 @@ exports.generateAccessToken = userEntity => {
 
 exports.verifyAccessToken = (req, res, next) => {
     var token = req.headers['x-access-token'];
-    console.log(token);
 
     if (token) {
         jwt.verify(token, SECRET, (err, payload) => {
