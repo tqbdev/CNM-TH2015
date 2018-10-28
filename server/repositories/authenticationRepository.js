@@ -80,6 +80,15 @@ exports.login = loginEntity => {
 	return db.load(sql);
 }
 
+exports.findUserByUsername = username => {
+	var sql = `select * from users where username = '${username}'`;
+	return db.load(sql);
+}
+
+exports.findRefreshToken = (username,refreshToken) => {
+	var sql = `select * from refresh_token where username = '${username}' and refresh_token = '${refreshToken}'`;
+	return db.load(sql);
+}
 
 
 
