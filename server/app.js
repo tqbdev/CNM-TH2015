@@ -6,10 +6,11 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 
 var indexRouter       = require('./routes/index');
-var usersRouter       = require('./routes/users');
 var authRouter        = require('./routes/authenticationController');
-var verifyAccessToken = require('./repositories/authenticationRepository').verifyAccessToken;
-var testRouter        = require('./routes/testController');
+var verifyAccessToken = require('./repositories/authenticationRepository');
+var staffRouter       = require('./routes/staffController');
+var customerRouter    = require('./routes/customerController');
+var receiverRouter    = require('./routes/receiverController');
 
 var app = express();
 
@@ -22,8 +23,9 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/',authRouter);
-app.use('/test', verifyAccessToken, testRouter);
+app.use('/staff', verifyAccessToken.verifyAccessToken, verifyAccessToken.roleStaff, staffRouter);
+app.use('/customer', verifyAccessToken.verifyAccessToken, verifyAccessToken.roleCustomer, customerRouter);
+app.use('/receiver', verifyAccessToken.verifyAccessToken, verifyAccessToken.roleReceiver, receiverRouter);
 
 module.exports = app;

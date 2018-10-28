@@ -6,7 +6,7 @@ var db = require('../database/mysql-db');
 var md5 = require('crypto-js/md5');
 
 const SECRET = 'ABCDEF';
-const AC_LIFETIME = 10; // seconds
+const AC_LIFETIME = 1000; // seconds
 
 exports.generateAccessToken = userEntity => {
     var payload = {
@@ -45,6 +45,48 @@ exports.verifyAccessToken = (req, res, next) => {
     }
 }
 
+exports.roleStaff = (req, res, next) => {
+    var token = req.headers['x-access-token'];
+        jwt.verify(token, SECRET, (err, payload) => {
+                if(payload.user.role=="Staff"){
+                    next();
+                }
+                else{
+                    res.json({
+                        msg: 'You are not the staff'
+                    })
+                } 
+        })
+}
+
+exports.roleCustomer = (req, res, next) => {
+    var token = req.headers['x-access-token'];
+        jwt.verify(token, SECRET, (err, payload) => {
+                if(payload.user.role=="Customer"){
+                    next();
+                }
+                else{
+                    res.json({
+                        msg: 'You are not the customer'
+                    })
+                } 
+        })
+}
+
+exports.roleReceiver = (req, res, next) => {
+    var token = req.headers['x-access-token'];
+        jwt.verify(token, SECRET, (err, payload) => {
+                if(payload.user.role=="Receiver"){
+                    next();
+                }
+                else{
+                    res.json({
+                        msg: 'You are not the receiver'
+                    })
+                } 
+        })
+}
+
 exports.generateRefreshToken = () => {
     const SIZE = 80;
     return rndToken.generate(SIZE);
@@ -66,13 +108,13 @@ exports.updateRefreshToken = (username, rfToken) => {
     });
 }
 
-exports.add = userEntity => {
+// exports.add = userEntity => {
 
-    var md5_pwd = md5(userEntity.password);
-    var sql = `insert into users(username, password, name, email, dob, permission) values('${userEntity.username}', '${md5_pwd}', '${userEntity.name}', '${userEntity.email}', '${userEntity.dob}', ${userEntity.permission})`;
+//     var md5_pwd = md5(userEntity.password);
+//     var sql = `insert into users(username, password, name, email, dob, permission) values('${userEntity.username}', '${md5_pwd}', '${userEntity.name}', '${userEntity.email}', '${userEntity.dob}', ${userEntity.permission})`;
 
-    return db.insert(sql);
-}
+//     return db.insert(sql);
+// }
 
 exports.login = loginEntity => {
     var md5_pwd = md5(loginEntity.pwd);
