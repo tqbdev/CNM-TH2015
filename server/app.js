@@ -6,11 +6,11 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 
 var indexRouter       = require('./routes/index');
-var authRouter        = require('./routes/authenticationController');
-var verifyAccessToken = require('./repositories/authenticationRepository');
-var staffRouter       = require('./routes/staffController');
-var customerRouter    = require('./routes/customerController');
-var receiverRouter    = require('./routes/receiverController');
+var authRouter        = require('./routes/authenticationRouter');
+var verifyAccessToken = require('./service/authenticationService');
+var staffRouter       = require('./routes/staffRouter');
+var customerRouter    = require('./routes/customerRouter');
+var receiverRouter    = require('./routes/receiverRouter');
 
 var app = express();
 

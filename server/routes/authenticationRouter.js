@@ -1,16 +1,17 @@
 var express = require('express');
 
 var authRepo = require('../repositories/authenticationRepository');
+var authService = require('../service/authenticationService');
 
 var router = express.Router();
 
 router.post('/login', (req, res) => {
-	authRepo.login(req.body)
+	authService.login(req.body)
 		.then(rows => {
 			if (rows.length > 0) {
 				var userEntity = rows[0];
-				var acToken = authRepo.generateAccessToken(userEntity);
-				var rfToken = authRepo.generateRefreshToken();
+				var acToken = authService.generateAccessToken(userEntity);
+				var rfToken = authService.generateRefreshToken();
 
 				authRepo.updateRefreshToken(userEntity.username, rfToken)
 					.then(value => {
@@ -48,7 +49,7 @@ router.post('/token', (req, res) => {
 			authRepo.findUserByUsername(username).then(rows => {
 			if (rows.length > 0) {
 				var userEntity = rows[0];
-				var acToken = authRepo.generateAccessToken(userEntity);
+				var acToken = authService.generateAccessToken(userEntity);
 						res.json({
 							auth: true,
 							access_token: acToken,
