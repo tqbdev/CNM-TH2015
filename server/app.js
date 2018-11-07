@@ -14,6 +14,7 @@ var verifyAccessToken = require('./service/authenticationService');
 var staffRouter       = require('./routes/staffRouter');
 var customerRouter    = require('./routes/customerRouter');
 var receiverRouter    = require('./routes/receiverRouter');
+var userRouter        = require('./routes/UserRouter');
 
 var app = express();
 
@@ -30,6 +31,7 @@ app.use('/',authRouter);
 app.use('/staff', verifyAccessToken.verifyAccessToken, verifyAccessToken.roleStaff, staffRouter);
 app.use('/customer', verifyAccessToken.verifyAccessToken, verifyAccessToken.roleCustomer, customerRouter);
 app.use('/receiver', verifyAccessToken.verifyAccessToken, verifyAccessToken.roleReceiver, receiverRouter);
+app.use('/api/user/',userRouter);
 
 sequelize.sync({force: false})
   .then(() => {

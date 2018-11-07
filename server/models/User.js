@@ -13,5 +13,5 @@ module.exports = (sequelize, DataTypes) => {
         // User.belongsTo(models.JWT_Table)
     }
 
-    return User
+    return User;
 }
