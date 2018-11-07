@@ -1,13 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var {User} = require('../models');
+var {createUser,getAllUser} = require('../controllers/UserController')
 
-router.post('/request-infomation', (req, res) => {
-   const user = User.create(req.body);
-   const userJson = user.toJSON();
-   res.send({
-       user: userJson,
-   })
-})
+router.post('/request-information', createUser)
+
+router.get('/request-information', getAllUser)
 
 module.exports = router;
