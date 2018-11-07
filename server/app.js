@@ -5,6 +5,9 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
+const {sequelize} = require('./models')
+const config = require('./config/config')
+
 var indexRouter       = require('./routes/index');
 var authRouter        = require('./routes/authenticationRouter');
 var verifyAccessToken = require('./service/authenticationService');
@@ -27,5 +30,11 @@ app.use('/',authRouter);
 app.use('/staff', verifyAccessToken.verifyAccessToken, verifyAccessToken.roleStaff, staffRouter);
 app.use('/customer', verifyAccessToken.verifyAccessToken, verifyAccessToken.roleCustomer, customerRouter);
 app.use('/receiver', verifyAccessToken.verifyAccessToken, verifyAccessToken.roleReceiver, receiverRouter);
+
+sequelize.sync({force: false})
+  .then(() => {
+    app.listen(config.PORT)
+    console.log(`Server started on port ${config.PORT}`)
+  })
 
 module.exports = app;
