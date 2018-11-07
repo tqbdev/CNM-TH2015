@@ -17,9 +17,20 @@ module.exports = {
     })
 },
     async getAllUser (req, res) {
-          const user =  User.findAll().then(users=>{
+          User.findAll().then(users=>{
               res.send({
                   list:users
+              })
+          })
+      },
+      async getUnlocation(req, res) {
+        User.findOne({
+            where: {
+              status: 'UNLOCATION'
+            }
+          }).then(user =>{
+              res.send({
+                  information : user
               })
           })
       }
