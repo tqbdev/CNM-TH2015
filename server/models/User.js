@@ -1,10 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
-    const User = sequelize.define('user', {
+    const User = sequelize.define('User', {
         name: DataTypes.STRING,
         telephone: DataTypes.STRING,
         address: DataTypes.STRING,
         coordinate: DataTypes.STRING,
-        note: DataTypes.STRING,
+        note: DataTypes.TEXT,
         status: DataTypes.STRING // nonlocate | located | received | moving | completed
     })
 
@@ -13,5 +13,5 @@ module.exports = (sequelize, DataTypes) => {
         // User.belongsTo(models.JWT_Table)
     }
 
-    return User;
+    return User
 }
