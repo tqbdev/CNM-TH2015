@@ -36,6 +36,8 @@ app.use(cors())
 app.use('/admin', adminRoute)
 app.use('/driver', driverRoute)
 
+require('./passport')
+
 sequelize.sync({force: false})
   .then(() => {
     app.listen(config.PORT)
