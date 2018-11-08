@@ -6,7 +6,7 @@ module.exports = {
     password: process.env.DB_PASS || 'root',
     options: {
       dialect: process.env.DIALECT || 'mysql',
-      host: process.env.HOST || 'localhost'
+      host: process.env.HOST || '104.248.178.182'
     }
   },
   authencation: {

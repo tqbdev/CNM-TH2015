@@ -1,4 +1,5 @@
 const passport = require('passport')
+const AppConstant = require('../app.constant')
 
 module.exports = function (req, res, next) {
   passport.authenticate('jwt', function (err, user, role) {
