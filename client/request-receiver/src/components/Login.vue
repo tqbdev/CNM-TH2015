@@ -15,7 +15,6 @@
             v-model="password"
           ></v-text-field>
         </form>
-        <div class="danger-alert" v-html="error"></div>
         <v-btn
           dark
           class="cyan"
@@ -34,8 +33,7 @@ export default {
   data () {
     return {
       username: '',
-      password: '',
-      error: null
+      password: ''
     }
   },
   methods: {
@@ -51,8 +49,9 @@ export default {
         this.$router.push({
           name: 'request'
         })
+        this.$snotify.success('Login successfully')
       } catch (error) {
-        this.error = error.response.data.error
+        this.$snotify.error(error.response.data.error)
       }
     }
   }
