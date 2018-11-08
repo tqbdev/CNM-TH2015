@@ -3,9 +3,9 @@ import store from '@/store/store'
 
 export default () => {
   return axios.create({
-    baseURL: `http://localhost:8081/`,
+    baseURL: `http://localhost:8081/admin`,
     headers: {
-      'x-access-token': `${store.state.token}`
+      Authorization: `Bearer ${store.state.token}`
     }
   })
 }
