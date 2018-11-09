@@ -3,6 +3,8 @@
     <v-flex xs6 offset-xs3>
       <panel title="Login">
         <form
+          ref="form"
+          lazy-validation
           name="request-receiver-login-form"
           autocomplete="off">
           <v-text-field
@@ -16,6 +18,7 @@
           ></v-text-field>
         </form>
         <v-btn
+          :loading="loading"
           dark
           class="cyan"
           @click="login">
@@ -33,25 +36,31 @@ export default {
   data () {
     return {
       username: '',
-      password: ''
+      password: '',
+      loading: false
     }
   },
   methods: {
     async login () {
-      try {
-        const response = await AuthencationService.login({
-          username: this.username,
-          password: this.password
-        })
+      if (this.$refs.form.validate() && !this.loading) {
+        try {
+          this.loading = true
+          const response = await AuthencationService.login({
+            username: this.username,
+            password: this.password
+          })
 
-        this.$store.dispatch('setToken', response.data.token)
-        this.$store.dispatch('setUser', response.data.user)
-        this.$router.push({
-          name: 'request'
-        })
-        this.$snotify.success('Login successfully')
-      } catch (error) {
-        this.$snotify.error(error.response.data.error)
+          this.$store.dispatch('setToken', response.data.token)
+          this.$store.dispatch('setUser', response.data.user)
+          this.$router.push({
+            name: 'request'
+          })
+          this.$snotify.success('Login successfully')
+        } catch (error) {
+          this.$snotify.error(error.response.data.error)
+        } finally {
+          this.loading = false
+        }
       }
     }
   }
