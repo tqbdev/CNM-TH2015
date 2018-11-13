@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import Login from '@/components/Login'
 import RequestList from '@/components/RequestList'
+import LocationIdentifier from '@/components/LocationIdentifier'
 import store from '@/store/store'
 
 Vue.use(Router)
@@ -27,6 +28,11 @@ export default new Router({
           next();
         }
       }
+    },
+    {
+      path: '/request/:id',
+      name: 'request',
+      component: LocationIdentifier
     }
   ]
 })

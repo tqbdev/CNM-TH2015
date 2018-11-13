@@ -2,7 +2,7 @@
   <v-layout row>
     <v-flex xs6 offset-xs3>
       <panel title="Login">
-        <form
+        <v-form
           ref="form"
           lazy-validation
           name="request-receiver-login-form"
@@ -16,7 +16,7 @@
             type="password"
             v-model="password"
           ></v-text-field>
-        </form>
+        </v-form>
         <v-btn
           :loading="loading"
           dark
@@ -50,13 +50,15 @@ export default {
             password: this.password
           })
 
-          this.$store.dispatch('setToken', response.data.token)
+          this.$store.dispatch('setAccessToken', response.data.token)
+          this.$store.dispatch('setRefreshToken', response.data.refreshToken)
           this.$store.dispatch('setUser', response.data.user)
           this.$router.push({
             name: 'request'
           })
           this.$snotify.success('Login successfully')
         } catch (error) {
+          console.log(error)
           this.$snotify.error(error.response.data.error)
         } finally {
           this.loading = false

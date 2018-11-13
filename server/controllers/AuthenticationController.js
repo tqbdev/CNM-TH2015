@@ -7,12 +7,11 @@ const config = require('../config/config')
 const AppConstant = require('../app.constant')
 
 function jwtSignUser (user, role) {
-  const ONE_HOUR = 60 * 60
   return jwt.sign({
     user,
     role
   }, config.authencation.jwtSecret, {
-    expiresIn: ONE_HOUR
+    expiresIn: config.authencation.jwtExpiresIn
   })
 }
 
@@ -110,6 +109,34 @@ module.exports = {
     }
   },
 
+  async driverRevokeToken (req, res) {
+    try {
+      const { telephone, refreshToken } = req.body
+      const user = await Driver.findOne({
+        where: {
+          telephone,
+          refreshToken
+        }
+      })
+
+      if (!user) {
+        return res.status(401).send({
+          error: 'The information was incorrect'
+        })
+      }
+
+      await user.update({refreshToken: null})
+
+      res.send({
+        msg: 'Revoke token successfully'
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: 'An error has occured trying to revoke token'
+      })
+    }
+  },
+
   async adminLogin (req, res) {
     try {
       const {username, password} = req.body
@@ -172,7 +199,7 @@ module.exports = {
 
       res.send({
         user: userJson,
-        token: jwtSignUser(userJson, AppConstant.ROLE.Admin),
+        token: jwtSignUser(userJson, AppConstant.ROLE.ADMIN),
         // refreshToken
       })
     } catch (err) {
@@ -180,5 +207,33 @@ module.exports = {
         error: 'An error has occured trying to login'
       })
     }
-  }
+  },
+
+  async adminRevokeToken (req, res) {
+    try {
+      const { username, refreshToken } = req.body
+      const user = await Admin.findOne({
+        where: {
+          username,
+          refreshToken
+        }
+      })
+
+      if (!user) {
+        return res.status(401).send({
+          error: 'The information was incorrect'
+        })
+      }
+
+      await user.update({refreshToken: null})
+
+      res.send({
+        msg: 'Revoke token successfully'
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: 'An error has occured trying to revoke token'
+      })
+    }
+  },
 }
