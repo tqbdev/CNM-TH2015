@@ -8,8 +8,9 @@ const config = require('./config/config')
 const AppConstant = require('./app.constant')
 
 passport.use(
+  'jwt',
   new JwtStrategy({
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    jwtFromRequest: ExtractJwt.fromExtractors([ExtractJwt.fromAuthHeaderAsBearerToken(), ExtractJwt.fromUrlQueryParameter('token')]),
     secretOrKey: config.authencation.jwtSecret
   }, async function (jwtPayload, done) {
     try {

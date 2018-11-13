@@ -83,6 +83,12 @@ export default {
           this.$snotify.success('Request receive successfully')
         } catch (error) {
           this.$snotify.error(error.response.data.error)
+          if (error.response.status === 401 || error.response.status === 403) {
+            this.$store.dispatch('logout')
+            this.$router.push({
+              name: 'login'
+            })
+          }
         } finally {
           this.loading = false
         }
