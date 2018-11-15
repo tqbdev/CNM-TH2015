@@ -15,12 +15,20 @@ module.exports = {
            error: 'An error has occured trying to login'
          })
      })
- },
-     async getAllDriver (req, res) {
+ }, async getAllDriver (req, res) {
            Driver.findAll().then(drivers=>{
                res.send({
                    list:drivers
                })
            })
-       }
+       },
+       async updateStatus (req, res) {
+        Driver.update({ready:req.body.ready},{
+            where: {id:req.body.id}
+        }).then(driver=>{
+            res.send({
+                status: "success!"
+            })
+        })
+    }
    }
