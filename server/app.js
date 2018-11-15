@@ -12,6 +12,7 @@ const config = require('./config/config')
 
 const adminRoute = require('./routes/adminRoute')
 const driverRoute = require('./routes/driverRoute')
+const userRoute = require('./routes/userRoute')
 
 const app = express()
 const server = http.Server(app)
@@ -26,6 +27,7 @@ app.use(cors())
 
 app.use('/admin', adminRoute)
 app.use('/driver', driverRoute)
+app.use('/api/user',userRoute)
 
 require('./passport')
 
