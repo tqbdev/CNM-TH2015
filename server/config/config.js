@@ -8,7 +8,7 @@ module.exports = {
 
     options: {
       dialect: process.env.DIALECT || 'mysql',
-      host: process.env.HOST || '104.248.178.182'
+      host: process.env.HOST || 'localhost'
     }
   },
   authencation: {
