@@ -20,5 +20,20 @@ module.exports = {
         error: 'Error in request receiver api.'
       })
     }
-  }
+  },
+
+  async getById (req, res) {
+    try {
+      const user = await User.findById(req.params.userId)
+      const userJson = user.toJSON()
+
+      res.send({
+        user: userJson
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: 'Error in get request by id.'
+      })
+    }
+  },
 }

@@ -7,7 +7,7 @@
         :to="{
           name: 'requestList'
         }">
-        Request Receiver
+        Location Identifier
       </router-link>
     </v-toolbar-title>
 
@@ -47,8 +47,7 @@
 export default {
   methods: {
     logout () {
-      this.$store.dispatch('setToken', null)
-      this.$store.dispatch('setUser', null)
+      this.$store.dispatch('logout')
       this.$router.push({
         name: 'login'
       })
