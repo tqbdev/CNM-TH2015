@@ -9,6 +9,7 @@
         </v-container>
       </main>
     </v-app>
+    <vue-snotify></vue-snotify>
   </div>
 </template>
 

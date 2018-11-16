@@ -9,6 +9,7 @@
         </v-container>
       </main>
     </v-app>
+    <vue-snotify></vue-snotify>
   </div>
 </template>
 
@@ -30,9 +31,5 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
-
-.danger-alert {
-  color: red;
 }
 </style>

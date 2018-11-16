@@ -5,13 +5,13 @@ module.exports = (sequelize, DataTypes) => {
         address: DataTypes.STRING,
         coordinate: DataTypes.STRING,
         note: DataTypes.TEXT,
-        status: DataTypes.STRING // nonlocate | located | received | moving | completed
+        status: DataTypes.INTEGER // nonlocate | located | received | moving | completed
     })
 
-    User.associate = function (models) {
-        // User.belongsTo(models.Driver)
-        // User.belongsTo(models.JWT_Table)
-    }
+    // User.associate = function (models) {
+    //     User.belongsTo(models.Driver)
+    //     // User.belongsTo(models.JWT_Table)
+    // }
 
     return User
 }

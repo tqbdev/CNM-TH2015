@@ -33,9 +33,9 @@ module.exports = (sequelize, DataTypes) => {
         }
     })
 
-    Driver.associate = function (models) {
-        //Driver.belongsTo(models.User)
-    }
+    // Driver.associate = function (models) {
+    //     Driver.hasMany(models.User, {as: 'Users'})
+    // }
 
     Driver.prototype.comparePassword = function (password) {
         return bcrypt.compareAsync(password, this.password)
