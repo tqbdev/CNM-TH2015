@@ -1,10 +1,10 @@
-const { User } = require('../models')
+const { Request } = require('../models')
 const AppConstants = require('../app.constant')
 
 function getUnlocatedRequests () {
-  return User.findAll({
+  return Request.findAll({
     where: {
-      status: AppConstants.USER.UNLOCATED
+      status: AppConstants.REQUEST.UNLOCATED
     },
     order: [
       ['updatedAt', 'DESC']
@@ -13,7 +13,7 @@ function getUnlocatedRequests () {
 }
 
 function getAllRequests () {
-  return User.findAll({
+  return Request.findAll({
     order: [
       ['updatedAt', 'DESC']
     ]
@@ -21,20 +21,20 @@ function getAllRequests () {
 }
 
 module.exports = (io) => {
-  const requests =  io
+  const requestsSocket =  io
     .of('/requests')
     .on('connection', function (socket) {
       setInterval(async () => {
-        const users = await getUnlocatedRequests()
-        requests.emit('OPEN', {
-          users
+        const requests = await getUnlocatedRequests()
+        requestsSocket.emit('OPEN', {
+          requests
         })
       }, 5000);
 
       setInterval(async () => {
-        const users = await getAllRequests()
-        requests.emit('ALL', {
-          users
+        const requests = await getAllRequests()
+        requestsSocket.emit('ALL', {
+          requests
         })
       }, 5000);
     })

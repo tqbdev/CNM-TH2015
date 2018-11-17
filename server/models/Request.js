@@ -1,17 +1,17 @@
 module.exports = (sequelize, DataTypes) => {
-    const User = sequelize.define('User', {
+    const Request = sequelize.define('Request', {
         name: DataTypes.STRING,
         telephone: DataTypes.STRING,
         address: DataTypes.STRING,
-        coordinate: DataTypes.STRING,
+        locatedAddress: DataTypes.STRING,
+        locatedCoordinate: DataTypes.STRING,
         note: DataTypes.TEXT,
         status: DataTypes.INTEGER // nonlocate | located | received | moving | completed
     })
 
-    // User.associate = function (models) {
-    //     User.belongsTo(models.Driver)
-    //     // User.belongsTo(models.JWT_Table)
-    // }
+    Request.associate = function (models) {
+        Request.belongsTo(models.Driver)
+    }
 
-    return User
+    return Request
 }

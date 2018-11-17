@@ -1,9 +1,9 @@
 <template>
-  <panel title="Client Information">
+  <panel title="Request Information">
     <v-data-table
-      v-if="user"
+      v-if="request"
       :headers="headers"
-      :items="[user]"
+      :items="[request]"
       class="elevation-1"
       :disable-initial-sort="true"
       hide-actions
@@ -27,7 +27,7 @@
 export default {
   name: 'RequestInfo',
   props: [
-    'user'
+    'request'
   ],
   data () {
     return {

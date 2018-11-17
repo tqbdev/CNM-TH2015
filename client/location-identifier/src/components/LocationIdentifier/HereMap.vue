@@ -21,8 +21,7 @@ export default {
     }
   },
   props: {
-    lat: Number,
-    lng: Number,
+    requestCoordinate: Object,
     width: String,
     height: String
   },
@@ -50,7 +49,7 @@ export default {
       this.$refs.map,
       mapTypes.normal.map, {
         zoom: 17,
-        center: { lng: this.lng, lat: this.lat },
+        center: this.requestCoordinate ? this.requestCoordinate : config.HereMap.defaultCoordinate,
         pixelRatio: pixelRatio
       })
 
@@ -65,18 +64,24 @@ export default {
       }
       this.marker = new H.map.Marker(coords, { icon: this.icon })
 
+      this.$emit('changeCoordinate', {
+        lat: coords.lat.toFixed(4),
+        lng: coords.lng.toFixed(4)
+      })
+
       this.map.setCenter(coords)
       // this.map.setZoom(14)
       this.map.addObject(this.marker)
     })
 
-    const currentCoords = {
-      lat: this.lat,
-      lng: this.lng
-    }
-    this.currentMarker = new H.map.Marker(currentCoords, { icon: this.currentIcon })
-    this.map.setCenter(currentCoords)
-    this.map.addObject(this.currentMarker)
+    this.$watch('requestCoordinate', requestCoordinate => {
+      if (requestCoordinate) {
+        const currentCoords = requestCoordinate
+        this.currentMarker = new H.map.Marker(currentCoords, { icon: this.currentIcon })
+        this.map.setCenter(currentCoords)
+        this.map.addObject(this.currentMarker)
+      }
+    }, {immediate:true})
 
     H.ui.UI.createDefault(this.map, mapTypes)
     const mapEvents = new H.mapevents.MapEvents(this.map)

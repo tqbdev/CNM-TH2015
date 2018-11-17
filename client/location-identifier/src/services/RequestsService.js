@@ -1,7 +1,10 @@
 import Api from '@/services/Api'
 
 export default {
-  getById (userId) {
-    return Api().get(`requests/${userId}`)
+  getById (requestId) {
+    return Api().get(`requests/${requestId}`)
+  },
+  updateById (requestId, request) {
+    return Api().post(`requests/${requestId}`, request)
   }
 }
