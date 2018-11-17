@@ -58,7 +58,6 @@ export default {
           })
           this.$snotify.success('Login successfully')
         } catch (error) {
-          console.log(error)
           this.$snotify.error(error.response.data.error)
         } finally {
           this.loading = false

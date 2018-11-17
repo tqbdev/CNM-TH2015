@@ -4,7 +4,7 @@
       <panel title="Client Information">
         <v-data-table
           :headers="headers"
-          :items="users"
+          :items="requests"
           class="elevation-1"
           :disable-initial-sort="true"
         >
@@ -65,7 +65,7 @@ export default {
           sortable: false
         }
       ],
-      users: [],
+      requests: [],
       socket : io('localhost:8081/requests', {
         forceNew: true
       })
@@ -73,7 +73,7 @@ export default {
   },
   mounted() {
     this.socket.on('OPEN', (data) => {
-      this.users = data.users
+      this.requests = data.requests
     });
   },
   methods: {
@@ -81,7 +81,7 @@ export default {
       this.$router.push({
         name: 'request',
         params: {
-          userId: id
+          requestId: id
         }
       })
     }

@@ -11,6 +11,7 @@ router.post('/token', adminToken)
 
 // Request receiver
 router.post('/requests', isAuthencatedAdmin, RequestController.receiveRequest)
-router.get('/requests/:userId', isAuthencatedAdmin, RequestController.getById)
+router.get('/requests/:requestId', isAuthencatedAdmin, RequestController.getById)
+router.post('/requests/:requestId', isAuthencatedAdmin, RequestController.updateById)
 
 module.exports = router;

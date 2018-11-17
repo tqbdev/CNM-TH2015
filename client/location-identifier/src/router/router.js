@@ -20,7 +20,7 @@ export default new Router({
       component: Login
     },
     {
-      path: '/request-list',
+      path: '/requests',
       name: 'requestList',
       component: RequestList,
       beforeEnter: (to, from, next) => {
@@ -30,7 +30,7 @@ export default new Router({
       }
     },
     {
-      path: '/request/:userId',
+      path: '/requests/:requestId',
       name: 'request',
       component: LocationIdentifier,
       beforeEnter: (to, from, next) => {
