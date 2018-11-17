@@ -7,13 +7,24 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   strict: true,
   state: {
-    token: null,
+    accessToken: null,
     user: null,
+    refreshToken: null,
     isUserLoggedIn: false
   },
   mutations: {
-    setToken (state, token) {
-      state.token = token
+    setAccessToken (state, token) {
+      state.accessToken = token
+
+      if (token) {
+        state.isUserLoggedIn = true
+      } else {
+        state.isUserLoggedIn = false
+      }
+    },
+
+    setRefreshToken (state, token) {
+      state.refreshToken = token
 
       if (token) {
         state.isUserLoggedIn = true
@@ -24,15 +35,30 @@ export default new Vuex.Store({
 
     setUser (state, user) {
       state.user = user
+    },
+
+    logout (state) {
+      state.refreshToken = null;
+      state.accessToken = null;
+      state.user = null;
+      state.isUserLoggedIn = null;
     }
   },
   actions: {
-    setToken ({commit}, token) {
-      commit('setToken', token)
+    setAccessToken ({commit}, token) {
+      commit('setAccessToken', token)
     },
 
-    setUser ({commit}, token) {
-      commit('setUser', token)
+    setRefreshToken ({commit}, token) {
+      commit('setRefreshToken', token)
+    },
+
+    setUser ({commit}, user) {
+      commit('setUser', user)
+    },
+
+    logout ({commit}) {
+      commit('logout')
     }
   },
   plugins: [

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const randtoken = require('rand-token')
-const _ = require('lodash')
+// const _ = require('lodash')
 
 const { Driver, Admin } = require('../models')
 const config = require('../config/config')

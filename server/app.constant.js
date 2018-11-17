@@ -3,7 +3,7 @@ module.exports = {
     DRIVER: 'driver',
     ADMIN: 'admin'
   },
-  USER: {
+  REQUEST: {
     UNLOCATED: 0,
     LOCATED: 1,
     RECEIVED: 2,

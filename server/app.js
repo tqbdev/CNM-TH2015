@@ -31,13 +31,9 @@ app.use('/api/user',userRoute)
 
 require('./passport')
 
-const io = socketIO(server);
-io.on('connection', function(socket) {
-  console.log(socket.id)
-  socket.on('SEND_MESSAGE', function(data) {
-      io.emit('MESSAGE', data)
-  });
-});
+const io = socketIO(server)
+
+require('./sockets')(io)
 
 sequelize.sync({force: false})
   .then(() => {
