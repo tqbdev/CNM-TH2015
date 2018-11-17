@@ -151,19 +151,19 @@ module.exports = {
           error: 'The login information was incorrect'
         })
       }
-
+console.log("--------------------------1")
       const isPasswordValid = await user.comparePassword(password)
       if (!isPasswordValid) {
         return res.status(403).send({
           error: 'The login information was incorrect'
         })
       }
-
+      console.log("--------------------------2")
       const refreshToken = randtoken.uid(256)
       const userJson = user.toJSON()
       delete userJson['refreshToken']
       await user.update({refreshToken})
-
+      console.log("--------------------------3")
       res.send({
         user: userJson,
         token: jwtSignUser(userJson, AppConstant.ROLE.ADMIN),
