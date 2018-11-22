@@ -25,7 +25,7 @@ app.use(bodyParser.json())
 app.use(cors())
 
 app.use('/admin', adminRoute)
-app.use('/driver', driverRoute)
+app.use('/drivers', driverRoute)
 
 require('./passport')
 
