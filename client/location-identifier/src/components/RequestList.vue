@@ -9,6 +9,7 @@
           :disable-initial-sort="true"
         >
           <template slot="items" slot-scope="props">
+            <td>{{ props.item.id }}</td>
             <td>{{ props.item.name }}</td>
             <td class="text-xs-right">{{ props.item.telephone }}</td>
             <td class="text-xs-right">{{ props.item.address }}</td>
@@ -43,6 +44,10 @@ export default {
     return {
       error: null,
       headers: [
+        {
+          text: 'ID',
+          value: 'id'
+        },
         {
           text: 'Name',
           value: 'name'

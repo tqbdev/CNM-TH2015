@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 import Login from '@/components/Login'
 import RequestList from '@/components/RequestList'
-import LocationIdentifier from '@/components/LocationIdentifier'
+import Routing from '@/components/Routing/Routing'
 import store from '@/store/store'
 
 Vue.use(Router)
@@ -20,7 +20,7 @@ export default new Router({
       component: Login
     },
     {
-      path: '/request-list',
+      path: '/requests',
       name: 'requestList',
       component: RequestList,
       beforeEnter: (to, from, next) => {
@@ -30,9 +30,14 @@ export default new Router({
       }
     },
     {
-      path: '/request/:id',
+      path: '/requests/:requestId',
       name: 'request',
-      component: LocationIdentifier
+      component: Routing,
+      beforeEnter: (to, from, next) => {
+        if (store.state.isUserLoggedIn) {
+          next();
+        }
+      }
     }
   ]
 })

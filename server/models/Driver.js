@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         password: DataTypes.STRING,
         name: DataTypes.STRING,
         address: DataTypes.STRING,
-        coordinate: DataTypes.GEOMETRY,
+        coordinate: DataTypes.STRING,
         ready: DataTypes.BOOLEAN, // busy | ready
         refreshToken: DataTypes.TEXT
     }, {

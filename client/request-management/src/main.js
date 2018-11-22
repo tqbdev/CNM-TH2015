@@ -13,6 +13,8 @@ import store from '@/store/store'
 
 import Panel from '@/components/globals/Panel'
 
+import config from './config';
+
 Vue.config.productionTip = false
 
 const options = {
@@ -24,6 +26,22 @@ const options = {
 Vue.use(Vuetify)
 Vue.use(Snotify, options)
 Vue.component('panel', Panel)
+
+Vue.filter('requestStatus', function (value) {
+  if (!value) return ''
+  switch (+value) {
+    case config.REQUEST.UNLOCATED:
+      return 'UNLOCATED'
+    case config.REQUEST.LOCATED:
+      return 'LOCATED'
+    case config.REQUEST.RECEIVED:
+      return 'RECEIVED'
+    case config.REQUEST.MOVING:
+      return 'MOVING'
+    case config.REQUEST.COMPLETED:
+      return 'COMPLETED'
+  }
+})
 
 sync(store, router)
 

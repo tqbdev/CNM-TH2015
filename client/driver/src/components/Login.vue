@@ -2,21 +2,23 @@
   <v-layout row>
     <v-flex xs6 offset-xs3>
       <panel title="Login">
-        <form
+        <v-form
+          ref="form"
+          lazy-validation
           name="request-receiver-login-form"
           autocomplete="off">
           <v-text-field
-            label="Username"
-            v-model="username"
+            label="Telephone"
+            v-model="telephone"
           ></v-text-field>
           <v-text-field
             label="Password"
             type="password"
             v-model="password"
           ></v-text-field>
-        </form>
-        <div class="danger-alert" v-html="error"></div>
+        </v-form>
         <v-btn
+          :loading="loading"
           dark
           class="cyan"
           @click="login">
@@ -33,26 +35,33 @@ export default {
   name: 'Login',
   data () {
     return {
-      username: '',
+      telephone: '',
       password: '',
-      error: null
+      loading: false
     }
   },
   methods: {
     async login () {
-      try {
-        const response = await AuthencationService.login({
-          username: this.username,
-          password: this.password
-        })
+      if (this.$refs.form.validate() && !this.loading) {
+        try {
+          this.loading = true
+          const response = await AuthencationService.login({
+            telephone: this.telephone,
+            password: this.password
+          })
 
-        this.$store.dispatch('setToken', response.data.token)
-        this.$store.dispatch('setUser', response.data.user)
-        this.$router.push({
-          name: 'requestList'
-        })
-      } catch (error) {
-        this.error = error.response.data.error
+          this.$store.dispatch('setAccessToken', response.data.token)
+          this.$store.dispatch('setRefreshToken', response.data.refreshToken)
+          this.$store.dispatch('setUser', response.data.user)
+          this.$router.push({
+            name: 'home'
+          })
+          this.$snotify.success('Login successfully')
+        } catch (error) {
+          this.$snotify.error(error.response.data.error)
+        } finally {
+          this.loading = false
+        }
       }
     }
   }

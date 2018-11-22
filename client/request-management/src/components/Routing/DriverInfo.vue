@@ -1,9 +1,9 @@
 <template>
-  <panel title="Request Information">
+  <panel title="Driver Information">
     <v-data-table
-      v-if="request"
+      v-if="driver"
       :headers="headers"
-      :items="[request]"
+      :items="[driver]"
       class="elevation-1"
       :disable-initial-sort="true"
       hide-actions
@@ -12,8 +12,6 @@
         <td>{{ props.item.id }}</td>
         <td>{{ props.item.name }}</td>
         <td class="text-xs-right">{{ props.item.telephone }}</td>
-        <td class="text-xs-right">{{ props.item.address }}</td>
-        <td class="text-xs-right">{{ props.item.note || '' }}</td>
       </template>
       <template slot="no-data">
         <v-alert :value="true" color="error" icon="warning">
@@ -26,9 +24,9 @@
 
 <script>
 export default {
-  name: 'RequestInfo',
+  name: 'DriverInfo',
   props: [
-    'request'
+    'driver'
   ],
   data () {
     return {
@@ -47,16 +45,6 @@ export default {
         {
           text: 'Telephone',
           value: 'telephone',
-          sortable: false
-        },
-        {
-          text: 'Address',
-          value: 'address',
-          sortable: false
-        },
-        {
-          text: 'Note',
-          value: 'note',
           sortable: false
         }
       ]

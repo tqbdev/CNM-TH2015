@@ -7,7 +7,7 @@
         :to="{
           name: 'requestList'
         }">
-        Location Identifier
+        Request Management
       </router-link>
     </v-toolbar-title>
 

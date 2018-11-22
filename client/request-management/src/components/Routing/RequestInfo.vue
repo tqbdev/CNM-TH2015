@@ -12,7 +12,7 @@
         <td>{{ props.item.id }}</td>
         <td>{{ props.item.name }}</td>
         <td class="text-xs-right">{{ props.item.telephone }}</td>
-        <td class="text-xs-right">{{ props.item.address }}</td>
+        <td class="text-xs-right">{{ props.item.locatedAddress || props.item.address }}</td>
         <td class="text-xs-right">{{ props.item.note || '' }}</td>
       </template>
       <template slot="no-data">

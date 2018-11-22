@@ -5,9 +5,9 @@
         class="home"
         tag="span"
         :to="{
-          name: 'requestList'
+          name: 'home'
         }">
-        Request Receiver
+        Driver
       </router-link>
     </v-toolbar-title>
 
@@ -15,9 +15,9 @@
       <v-btn
         flat
         :to="{
-          name: 'requestList'
+          name: 'home'
         }">
-        Request List
+        Home
       </v-btn>
     </v-toolbar-items>
 
@@ -47,8 +47,7 @@
 export default {
   methods: {
     logout () {
-      this.$store.dispatch('setToken', null)
-      this.$store.dispatch('setUser', null)
+      this.$store.dispatch('logout')
       this.$router.push({
         name: 'login'
       })

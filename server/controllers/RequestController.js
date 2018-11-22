@@ -1,4 +1,4 @@
-const { Request } = require('../models')
+const { Request, Driver } = require('../models')
 const AppConstant = require('../app.constant')
 
 module.exports = {
@@ -25,7 +25,13 @@ module.exports = {
 
   async getById (req, res) {
     try {
-      const request = await Request.findByPk(req.params.requestId)
+      const request = await Request.findByPk(req.params.requestId, {
+        include: [
+          {
+            model: Driver
+          }
+        ]
+      })
 
       if (!request) {
         return res.status(404).send({
