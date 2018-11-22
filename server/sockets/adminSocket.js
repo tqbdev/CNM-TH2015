@@ -1,4 +1,4 @@
-const { Request } = require('../models')
+const { Request, Driver } = require('../models')
 const AppConstants = require('../app.constant')
 
 function getUnlocatedRequests () {
@@ -16,6 +16,11 @@ function getAllRequests () {
   return Request.findAll({
     order: [
       ['updatedAt', 'DESC']
+    ],
+    include: [
+      {
+        model: Driver
+      }
     ]
   })
 }
