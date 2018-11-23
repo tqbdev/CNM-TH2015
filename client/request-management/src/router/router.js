@@ -12,7 +12,7 @@ export default new Router({
   routes: [
     {
       path: '*',
-      redirect: 'login'
+      redirect: 'requestList'
     },
     {
       path: '/login',
@@ -26,6 +26,8 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         if (store.state.isUserLoggedIn) {
           next();
+        } else {
+          next('/login')
         }
       }
     },
@@ -35,7 +37,9 @@ export default new Router({
       component: Routing,
       beforeEnter: (to, from, next) => {
         if (store.state.isUserLoggedIn) {
-          next();
+          next()
+        } else {
+          next('/login')
         }
       }
     }

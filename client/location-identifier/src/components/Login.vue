@@ -10,11 +10,15 @@
           <v-text-field
             label="Username"
             v-model="username"
+            :rules="requiredRules"
+            required
           ></v-text-field>
           <v-text-field
             label="Password"
             type="password"
             v-model="password"
+            :rules="requiredRules"
+            required
           ></v-text-field>
         </v-form>
         <v-btn
@@ -37,7 +41,10 @@ export default {
     return {
       username: '',
       password: '',
-      loading: false
+      loading: false,
+      requiredRules: [
+        v => !!v || 'Password is required'
+      ]
     }
   },
   methods: {
