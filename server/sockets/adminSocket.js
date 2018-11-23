@@ -7,7 +7,7 @@ function getUnlocatedRequests () {
       status: AppConstants.REQUEST.UNLOCATED
     },
     order: [
-      ['updatedAt', 'DESC']
+      ['createdAt', 'DESC']
     ]
   })
 }
@@ -15,7 +15,7 @@ function getUnlocatedRequests () {
 function getAllRequests () {
   return Request.findAll({
     order: [
-      ['updatedAt', 'DESC']
+      ['createdAt', 'DESC']
     ],
     include: [
       {

@@ -56,7 +56,7 @@ export default {
       if (isOK) {
         try {
           this.loading = true
-          const response = await DriverService.updateLocationById(this.$store.state.user.id, {
+          const response = await DriverService.updateById(this.$store.state.user.id, {
             coordinate: GlobalFunc.coordinate2String(this.newCoordinate)
           })
           this.$snotify.success(`Update new location successfully.`)

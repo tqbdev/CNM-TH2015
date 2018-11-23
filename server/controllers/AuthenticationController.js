@@ -21,9 +21,9 @@ module.exports = {
       const refreshToken = randtoken.uid(256)
       const user = await Driver.create(req.body)
 
+      await user.update({refreshToken})
       const userJson = user.toJSON()
       delete userJson['refreshToken']
-      await user.update({refreshToken})
 
       res.send({
         user: userJson,
@@ -60,9 +60,14 @@ module.exports = {
       }
 
       const refreshToken = randtoken.uid(256)
+      await user.update({
+        refreshToken,
+        coordinate: null,
+        ready: false
+      })
+
       const userJson = user.toJSON()
       delete userJson['refreshToken']
-      await user.update({refreshToken})
 
       res.send({
         user: userJson,
@@ -160,9 +165,10 @@ module.exports = {
       }
 
       const refreshToken = randtoken.uid(256)
+      await user.update({refreshToken})
+
       const userJson = user.toJSON()
       delete userJson['refreshToken']
-      await user.update({refreshToken})
 
       res.send({
         user: userJson,
