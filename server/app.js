@@ -31,7 +31,7 @@ require('./passport')
 
 const io = socketIO(server)
 
-require('./sockets')(io)
+require('./sockets')(io, app)
 
 sequelize.sync({force: false})
   .then(() => {

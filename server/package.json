@@ -16,6 +16,7 @@
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "fs": "0.0.1-security",
+    "hashmap": "^2.3.0",
     "http-errors": "~1.6.2",
     "joi": "^14.0.4",
     "jsonwebtoken": "^8.3.0",
