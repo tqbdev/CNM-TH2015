@@ -1,8 +1,8 @@
 const adminSocket = require('./adminSocket')
 const driverSocket = require('./driverSocket')
 
-module.exports = (io) => {
+module.exports = (io, app) => {
   // TODO: add middleware
-  adminSocket(io)
-  driverSocket(io)
+  adminSocket(io, app)
+  driverSocket(io, app)
 }

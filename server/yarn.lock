@@ -981,6 +981,11 @@ has-values@^1.0.0:
     is-number "^3.0.0"
     kind-of "^4.0.0"
 
+hashmap@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/hashmap/-/hashmap-2.3.0.tgz#b13fb65da7c8ba5e3db8fc1b8c5ba1d0049daf22"
+  integrity sha1-sT+2XafIul49uPwbjFuh0ASdryI=
+
 hoek@6.x.x:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-6.0.2.tgz#a79eac32bdc4fdd6ca056951e3066d84c229d228"

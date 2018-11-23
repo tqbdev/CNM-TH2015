@@ -25,7 +25,7 @@ function getAllRequests () {
   })
 }
 
-module.exports = (io) => {
+module.exports = (io, app) => {
   const requestsSocket =  io
     .of('/requests')
     .on('connection', function (socket) {
