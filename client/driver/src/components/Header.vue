@@ -25,8 +25,9 @@
 
     <v-toolbar-items>
       <v-btn-toggle
-        v-if="$store.state.isUserLoggedIn"
+        v-if="isUserLoggedIn"
         v-model="isReady"
+        v-on:change="onChangeReady"
         dark
         mandatory>
         <v-btn
@@ -40,7 +41,8 @@
           :loading="loading"
           color="success"
           style="height: 100%; width: 70px;"
-          :value="true">
+          :value="true"
+          :disabled="!user.coordinate">
           READY
         </v-btn>
       </v-btn-toggle>
@@ -48,7 +50,7 @@
 
     <v-toolbar-items>
       <v-btn
-        v-if="!$store.state.isUserLoggedIn"
+        v-if="!isUserLoggedIn"
         flat
         :to="{
           name: 'login'
@@ -57,7 +59,7 @@
       </v-btn>
 
       <v-btn
-        v-if="$store.state.isUserLoggedIn"
+        v-if="isUserLoggedIn"
         flat
         @click="logout()">
         Log Out
@@ -67,6 +69,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import DriverService from '@/services/DriverService'
 export default {
   data () {
@@ -75,31 +78,11 @@ export default {
       loading: false
     }
   },
-  mounted () {
-    // this.isReady = this.$store.state.user.ready
-    this.$watch('isReady', async isReady => {
-      if (isReady === this.$store.state.user.ready) return
-      if (isReady && !this.$store.state.user.coordinate) {
-        this.$snotify.error('Pls, update location first')
-        this.isReady = false
-        return
-      }
-
-      try {
-        this.loading = true
-        const response = await DriverService.updateById(this.$store.state.user.id, {
-          ready: isReady
-        })
-        this.$snotify.success(`Update new status successfully.`)
-        this.$store.dispatch('setUser', response.data.driver)
-        this.isReady = response.data.driver.ready
-      } catch (error) {
-        this.$snotify.error(error.response.data.error)
-        this.isReady = this.$store.state.user.ready
-      } finally {
-        this.loading = false
-      }
-    })
+  computed: {
+    ...mapState([
+      'isUserLoggedIn',
+      'user'
+    ])
   },
   methods: {
     logout () {
@@ -108,6 +91,24 @@ export default {
         name: 'login'
       })
       this.isReady = false
+    },
+    async onChangeReady(isReady) {
+      if (isReady === this.user.ready) return
+
+      try {
+        this.loading = true
+        const response = await DriverService.updateById(this.user.id, {
+          ready: isReady
+        })
+        this.$snotify.success(`Update new status successfully.`)
+        this.$store.dispatch('setUser', response.data.driver)
+        this.isReady = response.data.driver.ready
+      } catch (error) {
+        this.$snotify.error(error.response.data.error)
+        this.isReady = this.user.ready
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
