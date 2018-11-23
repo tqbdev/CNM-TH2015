@@ -10,6 +10,6 @@ router.post('/login', driverLogin)
 router.post('/token', driverToken)
 
 router.get('/:driverId', isAuthenticatedDriver, DriverController.getById)
-router.post('/:driverId', isAuthenticatedDriver, DriverController.updateLocationById)
+router.post('/:driverId', isAuthenticatedDriver, DriverController.updateById)
 
 module.exports = router;

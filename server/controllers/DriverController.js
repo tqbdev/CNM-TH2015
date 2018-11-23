@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 const { Driver } = require('../models')
 const AppConstant = require('../app.constant')
 
@@ -23,9 +25,9 @@ module.exports = {
     }
   },
 
-  async updateLocationById (req, res) {
+  async updateById (req, res) {
     try {
-      if (!req.body.coordinate) {
+      if (_.isNil(req.body.coordinate) && _.isNil(req.body.ready)) {
         return res.status(405).send({
           error: 'The new location information was incorrect'
         })
@@ -39,9 +41,15 @@ module.exports = {
         })
       }
 
-      await driver.update({
-        coordinate: req.body.coordinate
-      })
+      let updateFields = {}
+      if (!_.isNil(req.body.coordinate)) {
+        updateFields.coordinate = req.body.coordinate
+      }
+      if (!_.isNil(req.body.ready)) {
+        updateFields.ready = req.body.ready
+      }
+
+      await driver.update(updateFields)
 
       const driverJson = driver.toJSON()
       res.send({

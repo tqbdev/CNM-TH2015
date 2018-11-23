@@ -10,11 +10,15 @@
           <v-text-field
             label="Telephone"
             v-model="telephone"
+            :rules="phoneRules"
+            required
           ></v-text-field>
           <v-text-field
             label="Password"
             type="password"
             v-model="password"
+            :rules="requiredRules"
+            required
           ></v-text-field>
         </v-form>
         <v-btn
@@ -37,7 +41,15 @@ export default {
     return {
       telephone: '',
       password: '',
-      loading: false
+      loading: false,
+      phoneRules: [
+        v => !!v || 'Telephone is required',
+        v => (v && /^[0-9]*$/.test(v)) || 'Telephone must be only numberics',
+        v => (v && v.length == 10) || 'Telephone must be 10 numberics'
+      ],
+      requiredRules: [
+        v => !!v || 'Password is required'
+      ]
     }
   },
   methods: {
