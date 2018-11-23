@@ -28,15 +28,12 @@
 </template>
 
 <script>
-// import * as _ from 'lodash'
 import config from '@/config'
 import GlobalFunc from '@/functions'
 import HereMap from './HereMap.vue'
-import GeocoderReverse from './GeocoderReverse'
 import DriverService from '@/services/DriverService'
-import HereMapService from '@/services/HereMapService'
 export default {
-  name: 'LocationIdentifier',
+  name: 'Home',
   data () {
     return {
       loading: false,
