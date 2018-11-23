@@ -4,5 +4,17 @@
     "password": "driver@123",
     "name": "Nguyen Van Tai",
     "ready": false
+  },
+  {
+    "telephone": "0909090909",
+    "password": "driver@123",
+    "name": "Nguyen Van Ti",
+    "ready": false
+  },
+  {
+    "telephone": "0909090908",
+    "password": "driver@123",
+    "name": "Nguyen Van Tinh",
+    "ready": false
   }
 ]

@@ -1,6 +1,14 @@
 [
   {
-    "username": "admin",
-    "password": "admin"
+    "username": "manage",
+    "password": "manage"
+  },
+  {
+    "username": "locate",
+    "password": "locate"
+  },
+  {
+    "username": "request",
+    "password": "request"
   }
 ]
