@@ -1,5 +1,5 @@
 export default {
-  DISTANCE: 100,
+  DISTANCE: 100, // METER
   HereMap: {
     appId: 'cbKK71GntW15znfrL7e5',
     appCode: 'emeXZBrv-p2KVxbAGrUisQ',

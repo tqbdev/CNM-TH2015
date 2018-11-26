@@ -3,6 +3,7 @@ const _ = require('lodash')
 const { Request, Driver, Process } = require('../models')
 const AppConstants = require('../app.constant')
 const GlobalFunc = require('./GlobalFunc')
+const routing = require('./routing')
 
 const Op = Sequelize.Op;
 
@@ -51,7 +52,6 @@ module.exports = (app) => {
     for (const request of locatedRequests) {
       const shortestDriver = {
         distance: Infinity,
-        request,
         driverId: null
       }
 
@@ -78,6 +78,12 @@ module.exports = (app) => {
           const driverCoordinate = GlobalFunc.string2Coordinate(driver.coordinate)
           const requestCoordinate = GlobalFunc.string2Coordinate(request.locatedCoordinate)
 
+          // Check has route path
+          const response = await routing.routing(driverCoordinate, requestCoordinate)
+          if (response.status !== 200 ||
+              _.get(response, 'data.response.route').length <= 0) continue
+          
+          // Calculate distance using haversine
           const distance = GlobalFunc.haversine(driverCoordinate, requestCoordinate)
           if (distance < shortestDriver.distance) {
             shortestDriver.distance = distance
@@ -89,11 +95,11 @@ module.exports = (app) => {
       // console.log(shortestDriver)
       if (shortestDriver.distance !== Infinity) {
         await Process.create({
-          RequestId: shortestDriver.request.id,
+          RequestId: request.id,
           DriverId: shortestDriver.driverId
         })
 
-        onlineDrivers.get(shortestDriver.driverId).emit('SEND-REQUEST', shortestDriver.request)
+        onlineDrivers.get(shortestDriver.driverId).emit('SEND-REQUEST', request)
       } else {
         const retries = request.retries + 1
         request.update({

@@ -24,12 +24,14 @@ module.exports = (io, app) => {
         Process.findOne({
           where: {
             RequestId: requestId,
-            DriverId: id
+            DriverId: id,
+            status: AppConstants.PROCESS.SENT
           }
         }).then(process => {
-          process.update({
-            status: AppConstants.PROCESS.ACCEPTED
-          })
+          if (process)
+            process.update({
+              status: AppConstants.PROCESS.ACCEPTED
+            })
         })
       })
 
@@ -39,16 +41,29 @@ module.exports = (io, app) => {
         Process.findOne({
           where: {
             RequestId: requestId,
-            DriverId: id
+            DriverId: id,
+            status: AppConstants.PROCESS.SENT
           }
         }).then(process => {
-          process.update({
-            status: AppConstants.PROCESS.REJECTED
-          })
+          if (process)
+            process.update({
+              status: AppConstants.PROCESS.REJECTED
+            })
         })
       })
 
       socket.on('disconnect', function(){
+        Process.findOne({
+          where: {
+            DriverId: id,
+            status: AppConstants.PROCESS.SENT
+          }
+        }).then(process => {
+          if (process)
+            process.update({
+              status: AppConstants.PROCESS.REJECTED
+            })
+        })
         app.locals.onlineDrivers.delete(+id)
         console.log('REMOVE SOCKET - ID DRIVER: ', id)
       });
