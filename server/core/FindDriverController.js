@@ -34,56 +34,43 @@ function checkDriverOK(driverId, requestId) {
   return Process.count({
     where: {
       DriverId: driverId,
-      RequestId: requestId,
-      status: {
-        [Op.or]: [AppConstants.PROCESS.SENT, AppConstants.PROCESS.REJECTED]
-      } 
+      [Op.or]: [{
+        status: AppConstants.PROCESS.SENT
+      }, {
+        RequestId: requestId,
+        status: AppConstants.PROCESS.REJECTED
+      }],
     }
   })
 }
 
 module.exports = (app) => {
-  const shortestDriver = {
-    distance: Infinity,
-    request: null,
-    driverId: null
-  }
   const onlineDrivers = app.locals.onlineDrivers
-  app.locals.sentRequest = []
-  app.locals.sentDriver = []
   setInterval(async () => {
     const locatedRequests = await getLocatedRequests()
-    await Promise.all(locatedRequests.map(async (request) => {
-      // Initial shortestDriver
-      shortestDriver.distance = Infinity
-      shortestDriver.request = null
-      shortestDriver.driverId = null
-
-      if (request.retries > AppConstants.RETRIES) return
-      // Call db
-      const isSentRequest = await checkRequestSent(request.id)
-      if (isSentRequest) {
-        console.log('SENT REQUEST', isSentRequest)
-        return
+    for (const request of locatedRequests) {
+      const shortestDriver = {
+        distance: Infinity,
+        request,
+        driverId: null
       }
-      // if (_.includes(app.locals.sentRequest, request.id)) {
-      //   console.log('SENT REQUEST', app.locals.sentRequest)
-      //   return
-      // }
-      console.log('AFTER RETURN REQUEST')
 
-      await Promise.all(onlineDrivers.keys().map(async (id) => {
-        // Call db
-        const isNOKDriver = await checkDriverOK(id, request.id)
-        if (isNOKDriver) {
-          console.log('SENT DRIVER', isNOKDriver)
-          return
+      if (request.retries > AppConstants.RETRIES) continue
+
+      const isSent = await checkRequestSent(request.id)
+      if (isSent) {
+        // console.log('SENT REQUEST', isSent)
+        continue
+      }
+      // console.log('AFTER RETURN REQUEST')
+
+      for (const id of onlineDrivers.keys()) {
+        const isReject = await checkDriverOK(id, request.id)
+        if (isReject) {
+          // console.log('SENT DRIVER', isReject)
+          continue
         }
-        // if (_.includes(app.locals.sentDriver, id)) {
-        //   console.log('SENT DRIVER', app.locals.sentDriver)          
-        //   return
-        // }
-        console.log('AFTER RETURN DRIVER')
+        // console.log('AFTER RETURN DRIVER')
 
         const driver = await getDriverById(id)
 
@@ -94,27 +81,13 @@ module.exports = (app) => {
           const distance = GlobalFunc.haversine(driverCoordinate, requestCoordinate)
           if (distance < shortestDriver.distance) {
             shortestDriver.distance = distance
-            shortestDriver.request = request
             shortestDriver.driverId = id
           }
         }
-      }))
+      }
       
-      console.log(shortestDriver)
+      // console.log(shortestDriver)
       if (shortestDriver.distance !== Infinity) {
-        // if (_.includes(app.locals.sentRequest, shortestDriver.request.id) &&
-        //     _.includes(app.locals.sentDriver, shortestDriver.driverId)) {
-        //   return
-        // }
-        // if (await checkRequestSent(shortestDriver.request.id) ||
-        //     await checkDriverOK(shortestDriver.driverId, shortestDriver.request.id)) {
-        //   return
-        // }
-        
-        
-        // Call db create
-        // app.locals.sentRequest.push(shortestDriver.request.id)
-        // app.locals.sentDriver.push(shortestDriver.driverId)
         await Process.create({
           RequestId: shortestDriver.request.id,
           DriverId: shortestDriver.driverId
@@ -127,6 +100,6 @@ module.exports = (app) => {
           retries
         })
       }
-    }))
+    }
   }, 10000)
 }

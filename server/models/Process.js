@@ -8,5 +8,10 @@ module.exports = (sequelize, DataTypes) => {
       Process.belongsTo(models.Request)
   }
 
+  Process.destroy({
+    where: {},
+    truncate: true
+  })
+
   return Process
 }

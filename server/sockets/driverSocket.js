@@ -1,5 +1,8 @@
 const HashMap = require('hashmap')
 
+const { Process } = require('../models')
+const AppConstants = require('../app.constant')
+
 module.exports = (io, app) => {
   app.locals.onlineDrivers = new HashMap()
   const driversSocket =  io
@@ -16,11 +19,33 @@ module.exports = (io, app) => {
       console.log('ADD SOCKET - ID DRIVER: ', id)
 
       socket.on('ACCEPT', data => {
-        console.log('ACCEPT', data)
+        // console.log('ACCEPT', data)
+        const requestId = data.requestId
+        Process.findOne({
+          where: {
+            RequestId: requestId,
+            DriverId: id
+          }
+        }).then(process => {
+          process.update({
+            status: AppConstants.PROCESS.ACCEPTED
+          })
+        })
       })
 
       socket.on('REJECT', data => {
-        console.log('REJECT', data)
+        // console.log('REJECT', data)
+        const requestId = data.requestId
+        Process.findOne({
+          where: {
+            RequestId: requestId,
+            DriverId: id
+          }
+        }).then(process => {
+          process.update({
+            status: AppConstants.PROCESS.REJECTED
+          })
+        })
       })
 
       socket.on('disconnect', function(){
