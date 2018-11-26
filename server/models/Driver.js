@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         name: DataTypes.STRING,
         address: DataTypes.STRING,
         coordinate: DataTypes.STRING,
-        ready: DataTypes.BOOLEAN, // busy | ready
+        ready: {type: DataTypes.BOOLEAN, defaultValue: false}, // busy | ready
         refreshToken: DataTypes.TEXT
     }, {
         hooks: {

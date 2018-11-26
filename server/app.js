@@ -32,6 +32,7 @@ require('./passport')
 const io = socketIO(server)
 
 require('./sockets')(io, app)
+require('./core/FindDriverController')(app)
 
 sequelize.sync({force: false})
   .then(() => {

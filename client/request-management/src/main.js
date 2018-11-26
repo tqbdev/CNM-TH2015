@@ -28,7 +28,7 @@ Vue.use(Snotify, options)
 Vue.component('panel', Panel)
 
 Vue.filter('requestStatus', function (value) {
-  if (!value) return ''
+  if (isNaN(+value)) return ''
   switch (+value) {
     case config.REQUEST.UNLOCATED:
       return 'UNLOCATED'
