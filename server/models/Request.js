@@ -6,7 +6,8 @@ module.exports = (sequelize, DataTypes) => {
         locatedAddress: DataTypes.STRING,
         locatedCoordinate: DataTypes.STRING,
         note: DataTypes.TEXT,
-        status: DataTypes.INTEGER // nonlocate | located | received | moving | completed
+        status: {type: DataTypes.INTEGER, defaultValue: 0}, // nonlocate | located | received | moving | completed
+        retries: {type: DataTypes.INTEGER, defaultValue: 0}
     })
 
     Request.associate = function (models) {

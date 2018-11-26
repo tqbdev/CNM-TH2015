@@ -12,7 +12,7 @@ export default new Router({
   routes: [
     {
       path: '*',
-      redirect: 'requestList'
+      redirect: 'requests'
     },
     {
       path: '/login',
