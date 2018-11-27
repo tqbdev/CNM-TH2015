@@ -1,6 +1,6 @@
 const _ = require('lodash')
 
-const { Driver } = require('../models')
+const { Driver, Request } = require('../models')
 const AppConstant = require('../app.constant')
 
 module.exports = {
@@ -59,6 +59,46 @@ module.exports = {
       console.log(err)
       res.status(500).send({
         error: 'Error in update location for driver by id.'
+      })
+    }
+  },
+
+  async requestUpdate(req, res) {
+    try {
+      if (_.isNil(req.body.status)) {
+        return res.status(405).send({
+          error: 'The new status for request was incorrect'
+        })
+      }
+
+      const request = await Request.findOne({
+        where: {
+          id: req.params.requestId,
+          DriverId: req.user.id
+        }
+      })
+
+      if (!request) {
+        return res.status(404).send({
+          error: 'Not found request has id '
+                  + req.params.requestId
+                  + ' for driver by id '
+                  + req.user.id
+        })
+      }
+
+      await request.update({
+        status: req.body.status
+      })
+
+      const requestJson = request.toJSON()
+      res.send({
+        request: requestJson
+      })
+    } catch (err) {
+      console.log(err)
+      res.status(500).send({
+        error: 'Error in update status for request by id.'
       })
     }
   }

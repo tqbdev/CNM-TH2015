@@ -11,5 +11,6 @@ router.post('/token', driverToken)
 
 router.get('/:driverId', isAuthenticatedDriver, DriverController.getById)
 router.post('/:driverId', isAuthenticatedDriver, DriverController.updateById)
+router.post('/request/:requestId', isAuthenticatedDriver, DriverController.requestUpdate)
 
 module.exports = router;

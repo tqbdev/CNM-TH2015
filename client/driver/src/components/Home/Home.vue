@@ -6,6 +6,12 @@
       :request="request"
       v-on:accept="onAccept"
       v-on:reject="onReject"></request-info-dialog>
+    <routing
+      v-if="request"
+      :request="request"
+      :loading="loading"
+      v-on:start="onStartRequest"
+      v-on:done="onDoneRequest"></routing>
   </div>
 </template>
 
@@ -14,6 +20,10 @@ import {mapState} from 'vuex'
 import io from 'socket.io-client'
 import UpdateLocation from './UpdateLocation'
 import RequestInfoDialog from './RequestInfoDialog'
+import Routing from './Routing/Routing'
+import DriverService from '@/services/DriverService'
+import RequestsService from '@/services/RequestsService'
+import config from '../../config'
 export default {
   name: 'Home',
   data () {
@@ -21,7 +31,8 @@ export default {
       socket: null,
       request: null,
       isOpen: false,
-      timeout: null
+      timeout: null,
+      loading: false
     }
   },
   computed: {
@@ -37,7 +48,7 @@ export default {
     })
 
     this.socket.on('SEND-REQUEST', (data) => {
-      console.log(data)
+      // console.log(data)
       this.request = data
       this.isOpen = true
       this.timeout = setTimeout(() => {
@@ -46,16 +57,23 @@ export default {
     });
   },
   methods: {
-    onAccept () {
+    async onAccept () {
       this.isOpen = false
       this.socket.emit('ACCEPT', {
         requestId: this.request.id
       })
 
+      this.request.status = config.REQUEST.RECEIVED
+      
       if (this.timeout) {
         clearTimeout(this.timeout)
         this.timeout = null
       }
+
+      const response = await DriverService.updateById(this.user.id, {
+          ready: false
+        })
+      this.$store.dispatch('setUser', response.data.driver)
     },
     onReject () {
       this.isOpen = false
@@ -67,11 +85,40 @@ export default {
         clearTimeout(this.timeout)
         this.timeout = null
       }
+    },
+    async onStartRequest () {
+      try {
+        this.loading = true
+        const response = await RequestsService.updateById(this.request.id, {
+          status: config.REQUEST.MOVING
+        })
+        this.$snotify.success(`Start request successfully.`)
+        this.request = response.data.request
+      } catch (error) {
+        this.$snotify.error(error.response.data.error)
+      } finally {
+        this.loading = false
+      }
+    },
+    async onDoneRequest () {
+      try {
+        this.loading = true
+        const response = await RequestsService.updateById(this.request.id, {
+          status: config.REQUEST.COMPLETED
+        })
+        this.$snotify.success(`Done request successfully.`)
+        this.request = null
+      } catch (error) {
+        this.$snotify.error(error.response.data.error)
+      } finally {
+        this.loading = false
+      }
     }
   },
   components: {
     UpdateLocation,
-    RequestInfoDialog
+    RequestInfoDialog,
+    Routing
   }
 }
 </script>

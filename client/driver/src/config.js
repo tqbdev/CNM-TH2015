@@ -7,5 +7,12 @@ export default {
       lat: 10.762622,
       lng: 106.660172
     }
+  },
+  REQUEST: {
+    UNLOCATED: 0,
+    LOCATED: 1,
+    RECEIVED: 2,
+    MOVING: 3,
+    COMPLETED: 4
   }
 }
