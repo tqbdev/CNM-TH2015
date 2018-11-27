@@ -26,7 +26,7 @@
     <v-toolbar-items>
       <v-btn-toggle
         v-if="isUserLoggedIn"
-        v-model="isReady"
+        :value="isReady"
         v-on:change="onChangeReady"
         dark
         mandatory>
@@ -74,7 +74,6 @@ import DriverService from '@/services/DriverService'
 export default {
   data () {
     return {
-      isReady: false,
       loading: false
     }
   },
@@ -82,7 +81,10 @@ export default {
     ...mapState([
       'isUserLoggedIn',
       'user'
-    ])
+    ]),
+    isReady: function() {
+      return this.user.ready
+    }
   },
   methods: {
     logout () {
@@ -90,7 +92,6 @@ export default {
       this.$router.push({
         name: 'login'
       })
-      this.isReady = false
     },
     async onChangeReady(isReady) {
       if (isReady === this.user.ready) return
@@ -102,10 +103,8 @@ export default {
         })
         this.$snotify.success(`Update new status successfully.`)
         this.$store.dispatch('setUser', response.data.driver)
-        this.isReady = response.data.driver.ready
       } catch (error) {
         this.$snotify.error(error.response.data.error)
-        this.isReady = this.user.ready
       } finally {
         this.loading = false
       }

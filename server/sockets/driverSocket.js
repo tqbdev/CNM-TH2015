@@ -1,6 +1,6 @@
 const HashMap = require('hashmap')
 
-const { Process } = require('../models')
+const { Driver, Request, Process } = require('../models')
 const AppConstants = require('../app.constant')
 
 module.exports = (io, app) => {
@@ -32,6 +32,23 @@ module.exports = (io, app) => {
             process.update({
               status: AppConstants.PROCESS.ACCEPTED
             })
+        })
+
+        Request.findByPk(requestId).then(request => {
+          if (request) {
+            request.update({
+              status: AppConstants.REQUEST.RECEIVED,
+              DriverId: id
+            })
+          }
+        })
+
+        Driver.findByPk(id).then(driver => {
+          if (driver) {
+            driver.update({
+              ready: false
+            })
+          }
         })
       })
 

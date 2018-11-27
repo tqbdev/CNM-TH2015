@@ -4,7 +4,7 @@ export default {
   getById (requestId) {
     return Api().get(`requests/${requestId}`)
   },
-  updateById (requestId, request) {
-    return Api().post(`requests/${requestId}`, request)
+  updateById (requestId, data) {
+    return Api().post(`request/${requestId}`, data)
   }
 }

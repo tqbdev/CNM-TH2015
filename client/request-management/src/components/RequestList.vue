@@ -121,7 +121,7 @@ export default {
     closeDialog () {
       this.isDialogOpen = false
     },
-    editItem (id) {
+    showRoute (id) {
       this.$router.push({
         name: 'request',
         params: {

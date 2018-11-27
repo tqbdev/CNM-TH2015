@@ -52,7 +52,8 @@ module.exports = {
 
   async updateById (req, res) {
     try {
-      if (!req.body.locatedAddress || !req.body.locatedCoordinate) {
+      if (!req.body.locatedAddress ||
+          !req.body.locatedCoordinate) {
         return res.status(405).send({
           error: 'The update information was incorrect'
         })
